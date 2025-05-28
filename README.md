@@ -26,7 +26,7 @@ Follow these steps to get the project up and running on your local machine:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/noorhaan-almohammed/simple-task-managment.git
-   cd somple-task-management
+   cd simple-task-management
    ```
 2. **Install dependencies: Install PHP and Composer dependencies:**
     ```bash
