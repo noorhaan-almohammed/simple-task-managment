@@ -4,15 +4,20 @@ namespace App\Http\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class AuthService {
-      /**
+class AuthService
+{
+    /**
      * Register a new user with the given data.
      *
      * @param array $data The user data including 'name', 'email', and 'password'.
      * @return User The created user instance.
      * @return $token sting
      */
-    public function register(array $data){
+    public function register(array $data)
+    {
+        $path = $data['img_profile_url']->store('uploads/users', 'public');
+        $data['img_profile_url'] = $path;
+
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
         $token = Auth::login($user);
@@ -40,10 +45,10 @@ class AuthService {
      */
     public function logout($request)
     {
-            $user = Auth::user()->name;
-            $request->user()->tokens()->delete();
-            Auth()->logout();
-            return $user;
+        $user = Auth::user()->name;
+        $request->user()->tokens()->delete();
+        Auth()->logout();
+        return $user;
 
     }
 }
