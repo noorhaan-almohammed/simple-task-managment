@@ -23,7 +23,7 @@ class AuthController extends Controller
         // Inject AuthService
         $this->authService = $authService;
         // Middleware to protect the logout and profile routes, ensuring only authenticated users can access them
-        $this->middleware('jwt.auth')->only('logout', 'profile', 'refresh');
+        $this->middleware('jwt.auth')->only('logout', 'profile');
     }
 
     /**

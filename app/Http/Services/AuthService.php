@@ -3,6 +3,7 @@ namespace App\Http\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
@@ -20,8 +21,14 @@ class AuthService
 
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
+        $refreshToken = JWTAuth::claims(['type' => 'refresh'])->fromUser($user);
+
         $token = Auth::login($user);
-        return ['user' => Auth::user(), 'token' => $token];
+        return [
+            'user' => Auth::user(),
+            'token' => $token,
+            'refresh_token' => $refreshToken,
+        ];
     }
     /**
      * Attempt to log in with the given credentials.
@@ -35,8 +42,17 @@ class AuthService
             return false;
         }
 
-        return ['user' => Auth::user(), 'token' => $token];
+        $user = Auth::user();
+
+        $refreshToken = JWTAuth::claims(['type' => 'refresh'])->fromUser($user);
+
+        return [
+            'user' => $user,
+            'token' => $token,
+            'refresh_token' => $refreshToken,
+        ];
     }
+
 
     /**
      * Log out the currently authenticated user.
